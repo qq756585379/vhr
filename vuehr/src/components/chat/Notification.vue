@@ -73,7 +73,6 @@
     </div>
   </div>
 </template>
-
 <script>
   export default{
     data(){
@@ -97,7 +96,7 @@
           if (role.name == 'ROLE_admin') {
             isAdmin = true;
           }
-        });
+        })
         return isAdmin;
       }
     },
@@ -142,7 +141,7 @@
           _this.dialogLoading = false;
           if (resp && resp.status == 200) {
             var data = resp.data;
-
+            
             if (data.status == 'success') {
               _this.$store.state.stomp.send("/ws/nf", {}, '');
               _this.initSysMsgs();

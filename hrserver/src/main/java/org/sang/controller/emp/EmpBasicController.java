@@ -19,13 +19,14 @@ import org.thymeleaf.TemplateEngine;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Created by sang on 2018/1/12.
+ */
 @RestController
 @RequestMapping("/employee/basic")
 public class EmpBasicController {
-
     @Autowired
     EmpService empService;
     @Autowired
@@ -63,11 +64,12 @@ public class EmpBasicController {
         if (empService.addEmp(employee) == 1) {
             List<Position> allPos = positionService.getAllPos();
             for (Position allPo : allPos) {
-                if (Objects.equals(allPo.getId(), employee.getPosId())) {
+                if (allPo.getId() == employee.getPosId()) {
                     employee.setPosName(allPo.getName());
                 }
             }
-            executorService.execute(new EmailRunnable(employee, javaMailSender, templateEngine));
+            executorService.execute(new EmailRunnable(employee,
+                    javaMailSender, templateEngine));
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
@@ -99,8 +101,10 @@ public class EmpBasicController {
             Long departmentId, String beginDateScope) {
         Map<String, Object> map = new HashMap<>();
         List<Employee> employeeByPage = empService.getEmployeeByPage(page, size,
-                keywords, politicId, nationId, posId, jobLevelId, engageForm, departmentId, beginDateScope);
-        Long count = empService.getCountByKeywords(keywords, politicId, nationId, posId, jobLevelId, engageForm, departmentId, beginDateScope);
+                keywords,politicId, nationId, posId, jobLevelId, engageForm,
+                departmentId, beginDateScope);
+        Long count = empService.getCountByKeywords(keywords, politicId, nationId,
+                posId,jobLevelId, engageForm, departmentId, beginDateScope);
         map.put("emps", employeeByPage);
         map.put("count", count);
         return map;
@@ -113,8 +117,10 @@ public class EmpBasicController {
 
     @RequestMapping(value = "/importEmp", method = RequestMethod.POST)
     public RespBean importEmp(MultipartFile file) {
-        List<Employee> emps = PoiUtils.importEmp2List(file, empService.getAllNations(), empService.getAllPolitics(),
-                departmentService.getAllDeps(), positionService.getAllPos(), jobLevelService.getAllJobLevels());
+        List<Employee> emps = PoiUtils.importEmp2List(file,
+                empService.getAllNations(), empService.getAllPolitics(),
+                departmentService.getAllDeps(), positionService.getAllPos(),
+                jobLevelService.getAllJobLevels());
         if (empService.addEmps(emps) == emps.size()) {
             return RespBean.ok("导入成功!");
         }

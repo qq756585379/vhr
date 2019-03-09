@@ -14,16 +14,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Created by sang on 2018/1/12.
+ */
 @Service
 @Transactional
 public class EmpService {
-
     @Autowired
-    private EmpMapper empMapper;
-    private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-    private SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-    private SimpleDateFormat birthdayFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private DecimalFormat decimalFormat = new DecimalFormat("##.00");
+    EmpMapper empMapper;
+    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+    SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+    SimpleDateFormat birthdayFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DecimalFormat decimalFormat = new DecimalFormat("##.00");
 
     public List<Nation> getAllNations() {
         return empMapper.getAllNations();
@@ -56,7 +58,6 @@ public class EmpService {
                 startBeginDate = birthdayFormat.parse(split[0]);
                 endBeginDate = birthdayFormat.parse(split[1]);
             } catch (ParseException e) {
-                e.printStackTrace();
             }
         }
         return empMapper.getEmployeeByPage(start, size, keywords, politicId, nationId, posId, jobLevelId, engageForm, departmentId, startBeginDate, endBeginDate);
@@ -71,7 +72,6 @@ public class EmpService {
                 startBeginDate = birthdayFormat.parse(split[0]);
                 endBeginDate = birthdayFormat.parse(split[1]);
             } catch (ParseException e) {
-                e.printStackTrace();
             }
         }
         return empMapper.getCountByKeywords(keywords, politicId, nationId, posId, jobLevelId, engageForm, departmentId, startBeginDate, endBeginDate);
@@ -100,6 +100,6 @@ public class EmpService {
 
     public List<Employee> getEmployeeByPageShort(Integer page, Integer size) {
         int start = (page - 1) * size;
-        return empMapper.getEmployeeByPageShort(start, size);
+        return empMapper.getEmployeeByPageShort(start,size);
     }
 }

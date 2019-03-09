@@ -13,23 +13,23 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * Created by sang on 2017/12/28.
+ */
 @Component
 public class UrlAccessDecisionManager implements AccessDecisionManager {
-
-    /**
-     * 在 deeide方法中判断当前用户是否具备请求需要的角色，若该方法在执行过程中未抛出异常，则说明请求可以通过;若抛出异常，则说明请求权限不足。
-     */
     @Override
-    public void decide(Authentication auth, Object o, Collection<ConfigAttribute> cas) {
-        for (ConfigAttribute ca : cas) {
+    public void decide(Authentication auth, Object o, Collection<ConfigAttribute> cas){
+        Iterator<ConfigAttribute> iterator = cas.iterator();
+        while (iterator.hasNext()) {
+            ConfigAttribute ca = iterator.next();
             //当前请求需要的权限
             String needRole = ca.getAttribute();
             if ("ROLE_LOGIN".equals(needRole)) {
-                if (auth instanceof AnonymousAuthenticationToken) {//匿名用户
+                if (auth instanceof AnonymousAuthenticationToken) {
                     throw new BadCredentialsException("未登录");
-                } else {
+                } else
                     return;
-                }
             }
             //当前用户所具有的权限
             Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
@@ -41,12 +41,10 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
         }
         throw new AccessDeniedException("权限不足!");
     }
-
     @Override
     public boolean supports(ConfigAttribute configAttribute) {
         return true;
     }
-
     @Override
     public boolean supports(Class<?> aClass) {
         return true;

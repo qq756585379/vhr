@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Created by sang on 2017/12/28.
+ */
 @Service
 @Transactional
 public class HrService implements UserDetailsService {
@@ -22,7 +25,6 @@ public class HrService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        // 如果查到了，就直接返回，由SpringSecurity框架完成密码的比对操作。
         Hr hr = hrMapper.loadUserByUsername(s);
         if (hr == null) {
             throw new UsernameNotFoundException("用户名不对");
@@ -49,7 +51,7 @@ public class HrService implements UserDetailsService {
     }
 
     public int updateHrRoles(Long hrId, Long[] rids) {
-        hrMapper.deleteRoleByHrId(hrId);
+        int i = hrMapper.deleteRoleByHrId(hrId);
         return hrMapper.addRolesForHr(hrId, rids);
     }
 
@@ -64,7 +66,6 @@ public class HrService implements UserDetailsService {
     public List<Hr> getAllHrExceptAdmin() {
         return hrMapper.getAllHr(HrUtils.getCurrentHr().getId());
     }
-
     public List<Hr> getAllHr() {
         return hrMapper.getAllHr(null);
     }

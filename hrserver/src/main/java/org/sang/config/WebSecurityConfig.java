@@ -29,12 +29,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 通过 @EnableGlobalMethodSecurity 注解开启基于注解的安全配置，启用@PreAuthorize 和@PostAuthorize 两个注解。
+ * Created by sang on 2017/12/28.
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     HrService hrService;
     @Autowired
@@ -46,7 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(hrService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(hrService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -56,26 +56,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-            @Override
-            public <O extends FilterSecurityInterceptor> O postProcess(O o) {
-                o.setSecurityMetadataSource(metadataSource);
-                o.setAccessDecisionManager(urlAccessDecisionManager);
-                return o;
-            }
-        })
+        http.authorizeRequests()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setSecurityMetadataSource(metadataSource);
+                        o.setAccessDecisionManager(urlAccessDecisionManager);
+                        return o;
+                    }
+                })
                 .and()
-                .formLogin()
-                .loginPage("/login_p")
-                .loginProcessingUrl("/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
+                .formLogin().loginPage("/login_p").loginProcessingUrl("/login")
+                .usernameParameter("username").passwordParameter("password")
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
-                    public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException {
+                    public void onAuthenticationFailure(HttpServletRequest req,
+                                                        HttpServletResponse resp,
+                                                        AuthenticationException e) throws IOException {
                         resp.setContentType("application/json;charset=utf-8");
                         RespBean respBean = null;
-                        if (e instanceof BadCredentialsException || e instanceof UsernameNotFoundException) {
+                        if (e instanceof BadCredentialsException ||
+                                e instanceof UsernameNotFoundException) {
                             respBean = RespBean.error("账户名或者密码输入错误!");
                         } else if (e instanceof LockedException) {
                             respBean = RespBean.error("账户被锁定，请联系管理员!");
@@ -98,7 +99,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
-                    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException {
+                    public void onAuthenticationSuccess(HttpServletRequest req,
+                                                        HttpServletResponse resp,
+                                                        Authentication auth) throws IOException {
                         resp.setContentType("application/json;charset=utf-8");
                         RespBean respBean = RespBean.ok("登录成功!", HrUtils.getCurrentHr());
                         ObjectMapper om = new ObjectMapper();

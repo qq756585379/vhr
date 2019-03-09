@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-container>
-      <el-header style="padding: 0;display:flex;justify-content:space-between;align-items: center">
+      <el-header style="padding: 0px;display:flex;justify-content:space-between;align-items: center">
         <div style="display: inline">
           <el-input
             placeholder="通过员工名搜索员工,记得回车哦..."
             clearable
             @change="keywordsChange"
-            style="width: 300px;margin: 0;padding: 0;"
+            style="width: 300px;margin: 0px;padding: 0px;"
             size="mini"
             :disabled="advanceSearchViewVisible"
             @keyup.enter.native="searchEmp"
@@ -17,10 +17,9 @@
           <el-button type="primary" size="mini" style="margin-left: 5px" icon="el-icon-search" @click="searchEmp">搜索
           </el-button>
           <el-button slot="reference" type="primary" size="mini" style="margin-left: 5px"
-                     @click="showAdvanceSearchView">
-            <i class="fa fa-lg" v-bind:class="[advanceSearchViewVisible ? 'fa-angle-double-up':'fa-angle-double-down']"
-               style="margin-right: 5px">
-            </i>高级搜索
+                     @click="showAdvanceSearchView"><i
+            class="fa fa-lg" v-bind:class="[advanceSearchViewVisible ? faangledoubleup:faangledoubledown]"
+            style="margin-right: 5px"></i>高级搜索
           </el-button>
         </div>
         <div style="margin-left: 5px;margin-right: 20px;display: inline">
@@ -31,14 +30,15 @@
             :on-success="fileUploadSuccess"
             :on-error="fileUploadError" :disabled="fileUploadBtnText=='正在导入'"
             :before-upload="beforeFileUpload" style="display: inline">
-            <el-button size="mini" type="success" :loading="fileUploadBtnText=='正在导入'">
-              <i class="fa fa-lg fa-level-up" style="margin-right: 5px"></i>{{fileUploadBtnText}}
+            <el-button size="mini" type="success" :loading="fileUploadBtnText=='正在导入'"><i class="fa fa-lg fa-level-up"
+                                                                                          style="margin-right: 5px"></i>{{fileUploadBtnText}}
             </el-button>
           </el-upload>
-          <el-button type="success" size="mini" @click="exportEmps">
-            <i class="fa fa-lg fa-level-down" style="margin-right: 5px"></i>导出数据
+          <el-button type="success" size="mini" @click="exportEmps"><i class="fa fa-lg fa-level-down"
+                                                                       style="margin-right: 5px"></i>导出数据
           </el-button>
-          <el-button type="primary" size="mini" icon="el-icon-plus" @click="showAddEmpView">
+          <el-button type="primary" size="mini" icon="el-icon-plus"
+                     @click="showAddEmpView">
             添加员工
           </el-button>
         </div>
@@ -596,7 +596,6 @@
     </el-form>
   </div>
 </template>
-
 <script>
   export default {
     data() {
@@ -605,6 +604,8 @@
         keywords: '',
         fileUploadBtnText: '导入数据',
         beginDateScope: '',
+        faangledoubleup: 'fa-angle-double-up',
+        faangledoubledown: 'fa-angle-double-down',
         dialogTitle: '',
         multipleSelection: [],
         depTextColor: '#c0c4cc',
@@ -704,30 +705,30 @@
       this.loadEmps();
     },
     methods: {
-      fileUploadSuccess(response, file, fileList) {
+      fileUploadSuccess(response, file, fileList){
         if (response) {
           this.$message({type: response.status, message: response.msg});
         }
         this.loadEmps();
         this.fileUploadBtnText = '导入数据';
       },
-      fileUploadError(err, file, fileList) {
+      fileUploadError(err, file, fileList){
         this.$message({type: 'error', message: "导入失败!"});
         this.fileUploadBtnText = '导入数据';
       },
-      beforeFileUpload(file) {
+      beforeFileUpload(file){
         this.fileUploadBtnText = '正在导入';
       },
-      exportEmps() {
+      exportEmps(){
         window.open("/employee/basic/exportEmp", "_parent");
       },
-      cancelSearch() {
+      cancelSearch(){
         this.advanceSearchViewVisible = false;
         this.emptyEmpData();
         this.beginDateScope = '';
         this.loadEmps();
       },
-      showAdvanceSearchView() {
+      showAdvanceSearchView(){
         this.advanceSearchViewVisible = !this.advanceSearchViewVisible;
         this.keywords = '';
         if (!this.advanceSearchViewVisible) {
@@ -739,7 +740,7 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      deleteManyEmps() {
+      deleteManyEmps(){
         this.$confirm('此操作将删除[' + this.multipleSelection.length + ']条数据, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -753,7 +754,7 @@
         }).catch(() => {
         });
       },
-      deleteEmp(row) {
+      deleteEmp(row){
         this.$confirm('此操作将永久删除[' + row.name + '], 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -763,36 +764,36 @@
         }).catch(() => {
         });
       },
-      doDelete(ids) {
+      doDelete(ids){
         this.tableLoading = true;
         var _this = this;
-        this.deleteRequest("/employee/basic/emp/" + ids).then(resp => {
+        this.deleteRequest("/employee/basic/emp/" + ids).then(resp=> {
           _this.tableLoading = false;
-          if (resp && resp.status === 200) {
+          if (resp && resp.status == 200) {
             var data = resp.data;
             _
             _this.loadEmps();
           }
         })
       },
-      keywordsChange(val) {
-        if (val === '') {
+      keywordsChange(val){
+        if (val == '') {
           this.loadEmps();
         }
       },
-      searchEmp() {
+      searchEmp(){
         this.loadEmps();
       },
-      currentChange(currentChange) {
+      currentChange(currentChange){
         this.currentPage = currentChange;
         this.loadEmps();
       },
-      loadEmps() {
+      loadEmps(){
         var _this = this;
         this.tableLoading = true;
-        this.getRequest("/employee/basic/emp?page=" + this.currentPage + "&size=10&keywords=" + this.keywords + "&politicId=" + this.emp.politicId + "&nationId=" + this.emp.nationId + "&posId=" + this.emp.posId + "&jobLevelId=" + this.emp.jobLevelId + "&engageForm=" + this.emp.engageForm + "&departmentId=" + this.emp.departmentId + "&beginDateScope=" + this.beginDateScope).then(resp => {
+        this.getRequest("/employee/basic/emp?page=" + this.currentPage + "&size=10&keywords=" + this.keywords + "&politicId=" + this.emp.politicId + "&nationId=" + this.emp.nationId + "&posId=" + this.emp.posId + "&jobLevelId=" + this.emp.jobLevelId + "&engageForm=" + this.emp.engageForm + "&departmentId=" + this.emp.departmentId + "&beginDateScope=" + this.beginDateScope).then(resp=> {
           this.tableLoading = false;
-          if (resp && resp.status === 200) {
+          if (resp && resp.status == 200) {
             var data = resp.data;
             _this.emps = data.emps;
             _this.totalCount = data.count;
@@ -800,16 +801,16 @@
           }
         })
       },
-      addEmp(formName) {
+      addEmp(formName){
         var _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (this.emp.id) {
               //更新
               this.tableLoading = true;
-              this.putRequest("/employee/basic/emp", this.emp).then(resp => {
+              this.putRequest("/employee/basic/emp", this.emp).then(resp=> {
                 _this.tableLoading = false;
-                if (resp && resp.status === 200) {
+                if (resp && resp.status == 200) {
                   var data = resp.data;
                   _this.dialogVisible = false;
                   _this.emptyEmpData();
@@ -819,10 +820,11 @@
             } else {
               //添加
               this.tableLoading = true;
-              this.postRequest("/employee/basic/emp", this.emp).then(resp => {
+              this.postRequest("/employee/basic/emp", this.emp).then(resp=> {
                 _this.tableLoading = false;
-                if (resp && resp.status === 200) {
+                if (resp && resp.status == 200) {
                   var data = resp.data;
+                  _
                   _this.dialogVisible = false;
                   _this.emptyEmpData();
                   _this.loadEmps();
@@ -834,14 +836,14 @@
           }
         });
       },
-      cancelEidt() {
+      cancelEidt(){
         this.dialogVisible = false;
         this.emptyEmpData();
       },
-      showDepTree() {
+      showDepTree(){
         this.showOrHidePop = !this.showOrHidePop;
       },
-      showDepTree2() {
+      showDepTree2(){
         this.showOrHidePop2 = !this.showOrHidePop2;
       },
       handleNodeClick(data) {
@@ -856,10 +858,10 @@
         this.showOrHidePop2 = false;
         this.depTextColor = '#606266';
       },
-      initData() {
+      initData(){
         var _this = this;
-        this.getRequest("/employee/basic/basicdata").then(resp => {
-          if (resp && resp.status === 200) {
+        this.getRequest("/employee/basic/basicdata").then(resp=> {
+          if (resp && resp.status == 200) {
             var data = resp.data;
             _this.nations = data.nations;
             _this.politics = data.politics;
@@ -870,8 +872,8 @@
           }
         })
       },
-      showEditEmpView(row) {
-        console.log(row);
+      showEditEmpView(row){
+        console.log(row)
         this.dialogTitle = "编辑员工";
         this.emp = row;
         this.emp.birthday = this.formatDate(row.birthday);
@@ -894,17 +896,17 @@
         delete this.emp.notWorkDate;
         this.dialogVisible = true;
       },
-      showAddEmpView() {
+      showAddEmpView(){
         this.dialogTitle = "添加员工";
         this.dialogVisible = true;
         var _this = this;
-        this.getRequest("/employee/basic/maxWorkID").then(resp => {
-          if (resp && resp.status === 200) {
+        this.getRequest("/employee/basic/maxWorkID").then(resp=> {
+          if (resp && resp.status == 200) {
             _this.emp.workID = resp.data;
           }
         })
       },
-      emptyEmpData() {
+      emptyEmpData(){
         this.emp = {
           name: '',
           gender: '',
@@ -939,11 +941,10 @@
     }
   };
 </script>
-
 <style>
   .el-dialog__body {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 
   .slide-fade-enter-active {

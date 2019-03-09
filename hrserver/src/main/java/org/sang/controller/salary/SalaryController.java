@@ -18,10 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/salary/sob")
 public class SalaryController {
-
     @Autowired
     SalaryService salaryService;
-
     @Autowired
     EmpService empService;
 
@@ -53,4 +51,5 @@ public class SalaryController {
         }
         return RespBean.error("删除失败!");
     }
+
 }
