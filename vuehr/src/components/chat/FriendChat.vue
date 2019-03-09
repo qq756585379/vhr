@@ -50,9 +50,10 @@
     </el-container>
   </div>
 </template>
+
 <script>
-  export default{
-    data(){
+  export default {
+    data() {
       return {
         hrs: [],
         msg: '',
@@ -73,12 +74,12 @@
       }
     },
     watch: {
-      msgList(){
+      msgList() {
         document.getElementById('chatDiv').scrollTop = document.getElementById('chatDiv').scrollHeight;
       }
     },
     methods: {
-      sendMsg(){
+      sendMsg() {
         var oldMsg = window.localStorage.getItem(this.$store.state.user.username + "#" + this.currentFriend.username);
         if (oldMsg == null) {
           oldMsg = [];
@@ -93,7 +94,7 @@
         this.msg = '';
         this.updateChatDiv();
       },
-      updateChatDiv(){
+      updateChatDiv() {
         var oldMsg = window.localStorage.getItem(this.currentUser.username + "#" + this.currentFriend.username);
         if (oldMsg == null) {
           this.$store.commit('updateMsgList', [])
@@ -101,7 +102,7 @@
           this.$store.commit('updateMsgList', JSON.parse(oldMsg))
         }
       },
-      toggleFriend(hr){
+      toggleFriend(hr) {
         //切换数据
         if (hr == this.currentFriend) {
           return;
@@ -112,9 +113,9 @@
         this.$store.commit("removeValueDotMap", "isDot#" + this.currentUser.username + "#" + hr.username);
         document.getElementById('chatDiv').scrollTop = document.getElementById('chatDiv').scrollHeight;
       },
-      loadHrs(){
+      loadHrs() {
         var _this = this;
-        this.getRequest("/chat/hrs").then(resp=> {
+        this.getRequest("/chat/hrs").then(resp => {
           _this.hrs = resp.data;
         })
       }
@@ -124,6 +125,7 @@
     }
   }
 </script>
+
 <style>
   .userfaceImg {
     width: 37px;

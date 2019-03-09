@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by sang on 2018/1/2.
- */
 @RestController
 @RequestMapping("/system/hr")
 public class SystemHrController {
+
     @Autowired
     HrService hrService;
 
@@ -51,10 +49,8 @@ public class SystemHrController {
 
     @RequestMapping("/{keywords}")
     public List<Hr> getHrsByKeywords(@PathVariable(required = false) String keywords) {
-        List<Hr> hrs = hrService.getHrsByKeywords(keywords);
-        return hrs;
+        return hrService.getHrsByKeywords(keywords);
     }
-
 
     @RequestMapping(value = "/hr/reg", method = RequestMethod.POST)
     public RespBean hrReg(String username, String password) {
@@ -66,5 +62,4 @@ public class SystemHrController {
         }
         return RespBean.error("注册失败!");
     }
-
 }

@@ -10,9 +10,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by sang on 2017/12/28.
+ * 对于 isAccountNonExpired、 isAccountNonLocked、 isCredentialsNonExpired，由于 Hr 表并未 设计相关字段，因此这里直接返回 true
+ * isEnabled方法则根据实际情况返回。
  */
 public class Hr implements UserDetails {
+
     private Long id;
     private String name;
     private String phone;
@@ -24,29 +26,35 @@ public class Hr implements UserDetails {
     private String remark;
     private List<Role> roles;
     private String userface;
+
     @Override
     public boolean isEnabled() {
         return enabled;
     }
+
     @Override
     public String getUsername() {
         return username;
     }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -56,6 +64,7 @@ public class Hr implements UserDetails {
         }
         return authorities;
     }
+
     @JsonIgnore
     @Override
     public String getPassword() {
@@ -121,7 +130,6 @@ public class Hr implements UserDetails {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
 
     public void setUsername(String username) {
         this.username = username;

@@ -9,21 +9,18 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.internet.MimeMessage;
 
-/**
- * Created by sang on 2017/9/20.
- */
 public class EmailRunnable implements Runnable {
+
     private Employee employee;
     private JavaMailSender javaMailSender;
     private TemplateEngine templateEngine;
 
-    public EmailRunnable(Employee employee,
-                         JavaMailSender javaMailSender,
-                         TemplateEngine templateEngine) {
+    public EmailRunnable(Employee employee, JavaMailSender javaMailSender, TemplateEngine templateEngine) {
         this.employee = employee;
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
     }
+
     @Override
     public void run() {
         try {

@@ -21,8 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
+
     @Autowired
     HrService hrService;
+
     @Autowired
     SysMsgService sysMsgService;
 

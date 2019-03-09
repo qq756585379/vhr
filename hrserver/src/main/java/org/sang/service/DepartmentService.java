@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by sang on 2018/1/7.
- */
 @Service
 @Transactional
 public class DepartmentService {
+
     @Autowired
     DepartmentMapper departmentMapper;
+
     public int addDep(Department department) {
         department.setEnabled(true);
         departmentMapper.addDep(department);

@@ -15,14 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by sang on 2018/1/25.
- */
 @RestController
 @RequestMapping("/salary/sobcfg")
 public class SalaryEmpController {
+
     @Autowired
     SalaryService salaryService;
+
     @Autowired
     EmpService empService;
 
